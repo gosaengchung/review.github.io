@@ -12,8 +12,8 @@ NEO4J_PASSWORD = "your-password"
 graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # 데이터 로드
-movies = pd.read_csv("data/movies.csv")
-ratings = pd.read_csv("data/ratings.csv")
+movies = pd.read_csv("movies.csv")
+ratings = pd.read_csv("ratings.csv")
 
 # 데이터 적재
 print("⏳ Neo4j에 데이터를 적재 중...")
