@@ -2,8 +2,8 @@ import pandas as pd
 
 def load_data():
     # 영화 데이터 로드
-    movies = pd.read_csv("data/movies.csv")
-    ratings = pd.read_csv("data/ratings.csv")
+    movies = pd.read_csv("movies.csv")
+    ratings = pd.read_csv("ratings.csv")
     return movies, ratings
 
 def preprocess_data(movies, ratings):
