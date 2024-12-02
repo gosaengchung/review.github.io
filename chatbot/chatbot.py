@@ -1,21 +1,23 @@
-from chatbot.result_generator import generate_results
-from chatbot.fake_review import create_fake_review
-from utils.prompts import QUESTIONS
+from utils.data_loader import load_data, preprocess_data
+from chatbot.recommender import calculate_similarity, recommend_movies
 
 def run_chatbot():
-    responses = {}
-    print("영화 취향 테스트를 시작합니다!\n")
+    print("🎬 영화 추천 챗봇에 오신 것을 환영합니다!")
+    
+    # 데이터 로드 및 처리
+    movies, ratings = load_data()
+    movies, ratings, user_movie_matrix = preprocess_data(movies, ratings)
+    
+    # 유사도 매트릭스 계산
+    similarity_matrix = calculate_similarity(user_movie_matrix)
+    
+    # 사용자 입력 받기
+    user_input = input("어떤 영화를 좋아하나요? 영화 제목을 입력하세요: ")
+    movie_id = movies[movies['title'] == user_input]['movieId'].values[0]
 
-    for idx, question in enumerate(QUESTIONS, start=1):
-        answer = input(f"{idx}. {question} (답변 입력): ")
-        responses[f"Q{idx}"] = answer
-
-    print("\n테스트 결과를 생성 중입니다...")
-    results = generate_results(responses)
-    print("\n[테스트 결과]")
-    print(results)
-
-    print("\n미리 쓰는 영화 리뷰 생성 중...")
-    review = create_fake_review(results, responses)
-    print("\n[미리 쓰는 영화리뷰]")
-    print(review)
+    print(f"'{user_input}'와 유사한 영화를 추천합니다...\n")
+    recommendations = recommend_movies(movie_id, similarity_matrix, user_movie_matrix)
+    
+    for idx, (movie_id, rating) in enumerate(recommendations, start=1):
+        movie_title = movies[movies['movieId'] == movie_id]['title'].values[0]
+        print(f"{idx}. {movie_title} (예상 별점: {rating:.2f})")
