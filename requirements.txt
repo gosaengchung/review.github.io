@@ -3,3 +3,4 @@ py2neo
 pandas
 fuzzywuzzy
 python-Levenshtein
+neo4j
