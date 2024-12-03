@@ -1,6 +1,6 @@
 from py2neo import Node, Relationship
 
-def load_data_to_neo4j(graph, movies, ratings):
+def load_data_to_neo4j(graph, merged_data):
     """Neo4j에 영화 데이터를 적재"""
     for _, row in merged_data.iterrows():
         movie_node = Node("Movie", movieId=row["movieId"], title=row["title"], genres=row["genres"])
