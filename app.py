@@ -5,13 +5,6 @@ from utils.query_utils import parse_query
 import pandas as pd
 import os
 
-try:
-    graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
-    graph.run("RETURN 1")
-    print("Neo4j 연결 성공!")
-except Exception as e:
-    print(f"Neo4j 연결 실패: {e}")
-    
 # Flask 애플리케이션 초기화
 app = Flask(__name__)
 
@@ -19,8 +12,13 @@ app = Flask(__name__)
 NEO4J_URI = "neo4j+s://26c4eed1.databases.neo4j.io"
 NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "NpVvH9xz-99a30btrQfPxeCqt-kQc_XcmIlTeqNLpKg"
-graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD), routing=False)
-
+try:
+    graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+    graph.run("RETURN 1")
+    print("Neo4j 연결 성공!")
+except Exception as e:
+    print(f"Neo4j 연결 실패: {e}")
+    
 # Neo4j 데이터 로드 (한 번만 실행 필요)
 movies = pd.read_csv("movies.csv")
 ratings = pd.read_csv("ratings.csv")
