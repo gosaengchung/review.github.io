@@ -4,6 +4,17 @@ from utils.neo4j_utils import load_data_to_neo4j, execute_neo4j_query
 from utils.query_utils import parse_query
 import pandas as pd
 import os
+import subprocess
+
+def run_setup_script():
+    try:
+        # setup.sh 실행
+        subprocess.run(["bash", "setup.sh"], check=True)
+        print("✅ setup.sh 스크립트가 성공적으로 실행되었습니다.")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ setup.sh 실행 중 오류 발생: {e}")
+    except FileNotFoundError:
+        print("❌ setup.sh 파일을 찾을 수 없습니다. 경로를 확인하세요.")
 
 # Flask 애플리케이션 초기화
 app = Flask(__name__)
@@ -46,5 +57,6 @@ def recommend():
 
 # Flask 앱 실행
 if __name__ == "__main__":
+    run_setup_script()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
