@@ -2,16 +2,13 @@ from py2neo import Node, Relationship
 
 def load_data_to_neo4j(graph, movies, ratings):
     """Neo4j에 영화 데이터를 적재"""
-    for _, row in movies.iterrows():
+    for _, row in merged_data.iterrows():
         movie_node = Node("Movie", movieId=row["movieId"], title=row["title"], genres=row["genres"])
+        rating_node = Node("Rating", userId=row["userId"], rating=row["rating"], timestamp=row["timestamp"])
+        relationship = Relationship(rating_node, "RATED", movie_node)
         graph.merge(movie_node, "Movie", "movieId")
-
-    for _, row in ratings.iterrows():
-        user_node = Node("User", userId=row["userId"])
-        movie_node = graph.nodes.match("Movie", movieId=row["movieId"]).first()
-        if movie_node:
-            rated_rel = Relationship(user_node, "RATED", movie_node, rating=row["rating"])
-            graph.merge(rated_rel)
+        graph.merge(rating_node, "Rating", "userId")
+        graph.merge(relationship)
 
 def execute_neo4j_query(graph, movie_title, exclude_genres=None, include_genres=None):
     """Neo4j에서 조건에 따라 영화 추천"""
