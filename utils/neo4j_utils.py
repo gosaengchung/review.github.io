@@ -19,9 +19,6 @@ def load_data_to_neo4j(graph, movies, ratings):
             tx.merge(rated_relationship)
     # 트랜잭션 커밋
     tx.commit()
-
-# 데이터 적재 실행
-load_data_to_neo4j(graph, movies, ratings)
 def execute_neo4j_query(graph, movie_title, exclude_genres=None, include_genres=None):
     """Neo4j에서 조건에 따라 영화 추천"""
     cypher_query = f"""
