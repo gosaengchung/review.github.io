@@ -15,8 +15,8 @@ NEO4J_PASSWORD = "NpVvH9xz-99a30btrQfPxeCqt-kQc_XcmIlTeqNLpKg"
 graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # Neo4j 데이터 로드 (한 번만 실행 필요)
-movies = pd.read_csv("data/movies.csv")
-ratings = pd.read_csv("data/ratings.csv")
+movies = pd.read_csv("movies.csv")
+ratings = pd.read_csv("ratings.csv")
 load_data_to_neo4j(graph, movies, ratings)
 
 # HTML 홈 페이지 라우트
