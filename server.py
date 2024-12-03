@@ -8,9 +8,9 @@ import pandas as pd
 app = Flask(__name__)
 
 # Neo4j 설정
-NEO4J_URI = "neo4j+s://<cluster-id>.databases.neo4j.io"
+NEO4J_URI = "neo4j+s://26c4eed1.databases.neo4j.io"
 NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "your-password"
+NEO4J_PASSWORD = "7y4c467TrjPfdv44M5JbEHiR5YvWbzzuGn8mRk-gtik"
 graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # 데이터 로드 (처음 실행 시 필요)
