@@ -13,11 +13,6 @@ NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "7y4c467TrjPfdv44M5JbEHiR5YvWbzzuGn8mRk-gtik"
 graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
-# 데이터 로드 (처음 실행 시 필요)
-movies = pd.read_csv("data/movies.csv")
-ratings = pd.read_csv("data/ratings.csv")
-load_data_to_neo4j(graph, movies, ratings)
-
 @app.route('/recommend', methods=['POST'])
 def recommend():
     """REST API로 영화 추천"""
