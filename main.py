@@ -1,4 +1,4 @@
-from py2neo import Graph
+from neo4j import GraphDatabase
 from utils.neo4j_utils import load_data_to_neo4j, execute_neo4j_query
 from utils.query_utils import parse_query
 import pandas as pd
