@@ -26,18 +26,26 @@ load_data_to_neo4j(graph, movies, ratings)
 print("✅ 데이터 적재 완료!")
 
 # 기본 라우트
-initialized = False
-
-@app.route("/")
-def home():
-    return "🎬 영화 추천 챗봇 API가 실행 중입니다! 초기화를 위해 /initialize를 호출하세요."
+# 초기화 엔드포인트
 
 @app.route("/initialize", methods=["POST"])
-
 def initialize():
-    global initialized
-    if initialized:
-        return jsonify({"status": "이미 초기화되었습니다!"}), 200
+    try:
+        movies = pd.read_csv("movies.csv")
+        ratings = pd.read_csv("ratings.csv")
+        # Neo4j 데이터 적재 (utils.neo4j_utils에서 제공되는 함수 사용)
+        load_data_to_neo4j(graph, movies, ratings)
+        return jsonify({"status": "Neo4j 초기화 완료!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+@app.route("/")
+
+def home():
+    return "🎬 Render Flask App is running! 초기화를 위해 /initialize를 호출하세요."
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 def recommend():
     data = request.json
     movie_title = data.get("movie_title", "")
