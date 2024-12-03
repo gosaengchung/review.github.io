@@ -4,9 +4,9 @@ from utils.query_utils import parse_query
 import pandas as pd
 
 # Neo4j 설정
-NEO4J_URI = "neo4j+s://<cluster-id>.databases.neo4j.io"
+NEO4J_URI = "neo4j+s://e1909ab9.databases.neo4j.io"
 NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "your-password"
+NEO4J_PASSWORD = "NpVvH9xz-99a30btrQfPxeCqt-kQc_XcmIlTeqNLpKg"
 
 # Neo4j 연결
 graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
