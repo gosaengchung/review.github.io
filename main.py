@@ -15,6 +15,7 @@ graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # 데이터 로드
 movies = pd.read_csv("movies.csv")
+movies = movies.drop_duplicates(subset="movieId")
 ratings = pd.read_csv("ratings.csv")
 merged_data = pd.merge(ratings, movies, on="movieId", how="inner")
 
