@@ -1,15 +1,27 @@
 from py2neo import Node, Relationship
 
-def load_data_to_neo4j(graph, merged_data):
-    """Neo4j에 영화 데이터를 적재"""
-    for _, row in merged_data.iterrows():
+def load_data_to_neo4j(graph, movies, ratings):
+    """Neo4j에 User, Movie 및 Rating 관계를 적재"""
+    tx = graph.begin()
+    
+    # Movie 노드 생성
+    for _, row in movies.iterrows():
         movie_node = Node("Movie", movieId=row["movieId"], title=row["title"], genres=row["genres"])
-        rating_node = Node("Rating", userId=row["userId"], rating=row["rating"], timestamp=row["timestamp"])
-        relationship = Relationship(rating_node, "RATED", movie_node)
-        graph.merge(movie_node, "Movie", "movieId")
-        graph.merge(rating_node, "Rating", "userId")
-        graph.merge(relationship)
+        tx.merge(movie_node, "Movie", "movieId")
+    
+    # User 노드 및 RATED 관계 생성
+    for _, row in ratings.iterrows():
+        user_node = Node("User", userId=row["userId"])
+        movie_node = graph.nodes.match("Movie", movieId=row["movieId"]).first()
+        if movie_node:
+            rated_relationship = Relationship(user_node, "RATED", movie_node, rating=row["rating"], timestamp=row["timestamp"])
+            tx.merge(user_node, "User", "userId")
+            tx.merge(rated_relationship)
+    # 트랜잭션 커밋
+    tx.commit()
 
+# 데이터 적재 실행
+load_data_to_neo4j(graph, movies, ratings)
 def execute_neo4j_query(graph, movie_title, exclude_genres=None, include_genres=None):
     """Neo4j에서 조건에 따라 영화 추천"""
     cypher_query = f"""
