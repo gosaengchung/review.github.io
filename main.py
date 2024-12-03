@@ -17,12 +17,10 @@ graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 movies = pd.read_csv("movies.csv")
 ratings = pd.read_csv("ratings.csv")
 merged_data = pd.merge(ratings, movies, on="movieId", how="inner")
-merged_data.to_csv("merged_movies_ratings.csv", index=False)
-data = pd.read_csv("merged_moives_ratings.csv")
 
 # 데이터 적재
 print("⏳ Neo4j에 데이터를 적재 중...")
-load_data_to_neo4j(graph, data)
+load_data_to_neo4j(graph, merged_data)
 print("✅ 데이터 적재 완료!")
 
 # 영화 추천 챗봇
