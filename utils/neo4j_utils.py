@@ -15,8 +15,8 @@ def load_data_to_neo4j(graph, movies, ratings):
     for _, row in movies.iterrows():
         movie_node = Node("Movie", movieId=row["movieId"], title=row["title"], genres=row["genres"])
         tx.merge(movie_node, "Movie", "movieId")
-    
-    # User 노드 및 RATED 관계 생성
+
+    # User 노드 및 RATED 관계 생성..
     for _, row in ratings.iterrows():
         user_node = Node("User", userId=row["userId"])
         movie_node = graph.nodes.match("Movie", movieId=row["movieId"]).first()
