@@ -26,12 +26,18 @@ load_data_to_neo4j(graph, movies, ratings)
 print("✅ 데이터 적재 완료!")
 
 # 기본 라우트
+initialized = False
+
 @app.route("/")
 def home():
-    return "🎬 영화 추천 챗봇 API가 실행 중입니다!"
+    return "🎬 영화 추천 챗봇 API가 실행 중입니다! 초기화를 위해 /initialize를 호출하세요."
 
-# 영화 추천 API 엔드포인트
-@app.route("/recommend", methods=["POST"])
+@app.route("/initialize", methods=["POST"])
+
+def initialize():
+    global initialized
+    if initialized:
+        return jsonify({"status": "이미 초기화되었습니다!"}), 200
 def recommend():
     data = request.json
     movie_title = data.get("movie_title", "")
