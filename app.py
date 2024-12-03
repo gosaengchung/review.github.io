@@ -4,18 +4,14 @@ from utils.neo4j_utils import load_data_to_neo4j, execute_neo4j_query
 from utils.query_utils import parse_query
 import pandas as pd
 import os
-import subprocess
 
-def run_setup_script():
-    try:
-        # setup.sh 실행
-        subprocess.run(["bash", "setup.sh"], check=True)
-        print("✅ setup.sh 스크립트가 성공적으로 실행되었습니다.")
-    except subprocess.CalledProcessError as e:
-        print(f"❌ setup.sh 실행 중 오류 발생: {e}")
-    except FileNotFoundError:
-        print("❌ setup.sh 파일을 찾을 수 없습니다. 경로를 확인하세요.")
-
+try:
+    graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+    graph.run("RETURN 1")
+    print("Neo4j 연결 성공!")
+except Exception as e:
+    print(f"Neo4j 연결 실패: {e}")
+    
 # Flask 애플리케이션 초기화
 app = Flask(__name__)
 
@@ -23,7 +19,7 @@ app = Flask(__name__)
 NEO4J_URI = "neo4j+s://26c4eed1.databases.neo4j.io"
 NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "NpVvH9xz-99a30btrQfPxeCqt-kQc_XcmIlTeqNLpKg"
-graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD), routing=False)
 
 # Neo4j 데이터 로드 (한 번만 실행 필요)
 movies = pd.read_csv("movies.csv")
@@ -56,7 +52,5 @@ def recommend():
         return jsonify({"status": "error", "message": str(e)})
 
 # Flask 앱 실행
-if __name__ == "__main__":
-    run_setup_script()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
