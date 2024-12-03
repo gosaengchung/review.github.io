@@ -1,4 +1,4 @@
-from py2neo import Node, Relationship
+from py2neo import Node, Relationship, Graph
 
 def load_data_to_neo4j(graph, movies, ratings):
     # Neo4j 설정
