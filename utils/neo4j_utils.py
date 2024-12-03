@@ -12,11 +12,15 @@ def load_data_to_neo4j(graph, movies, ratings):
     tx = graph.begin()
     
     # Movie 노드 생성
+    # Movie 노드 생성
     for _, row in movies.iterrows():
         movie_node = Node("Movie", movieId=row["movieId"], title=row["title"], genres=row["genres"])
-        tx.merge(movie_node, "Movie", "movieId")
+        # 중복 여부 확인
+        existing_node = graph.nodes.match("Movie", movieId=row["movieId"]).first()
+        if not existing_node:
+            tx.create(movie_node)
 
-    # User 노드 및 RATED 관계 생성..
+    # User 노드 및 RATED 관계 생성
     for _, row in ratings.iterrows():
         user_node = Node("User", userId=row["userId"])
         movie_node = graph.nodes.match("Movie", movieId=row["movieId"]).first()
@@ -24,7 +28,7 @@ def load_data_to_neo4j(graph, movies, ratings):
             rated_relationship = Relationship(user_node, "RATED", movie_node, rating=row["rating"], timestamp=row["timestamp"])
             tx.merge(user_node, "User", "userId")
             tx.merge(rated_relationship)
-    # 트랜잭션 커밋
+
     tx.commit()
 def execute_neo4j_query(graph, movie_title, exclude_genres=None, include_genres=None):
     """Neo4j에서 조건에 따라 영화 추천"""
