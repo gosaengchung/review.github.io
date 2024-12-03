@@ -15,9 +15,7 @@ graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # 데이터 로드
 movies = pd.read_csv("movies.csv")
-movies = movies.drop_duplicates(subset="movieId")
 ratings = pd.read_csv("ratings.csv")
-merged_data = pd.merge(ratings, movies, on="movieId", how="inner")
 
 # 데이터 적재
 print("⏳ Neo4j에 데이터를 적재 중...")
