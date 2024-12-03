@@ -4,7 +4,7 @@ from utils.query_utils import parse_query
 import pandas as pd
 
 # Neo4j 설정
-NEO4J_URI = "neo4j+s://e1909ab9.databases.neo4j.io"
+NEO4J_URI = "neo4j+s://26c4eed1.databases.neo4j.io"
 NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "NpVvH9xz-99a30btrQfPxeCqt-kQc_XcmIlTeqNLpKg"
 
