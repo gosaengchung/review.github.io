@@ -20,7 +20,7 @@ merged_data = pd.merge(ratings, movies, on="movieId", how="inner")
 
 # 데이터 적재
 print("⏳ Neo4j에 데이터를 적재 중...")
-load_data_to_neo4j(graph, merged_data)
+load_data_to_neo4j(graph, movies, ratings)
 print("✅ 데이터 적재 완료!")
 
 # 영화 추천 챗봇
