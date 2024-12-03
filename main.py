@@ -10,7 +10,7 @@ NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "NpVvH9xz-99a30btrQfPxeCqt-kQc_XcmIlTeqNLpKg"
 
 # Neo4j 연결
-graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD), routing=False)
 
 # 데이터 로드
 movies = pd.read_csv("movies.csv")
